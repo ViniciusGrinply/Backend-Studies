@@ -1,4 +1,4 @@
-package studies.backend.Entities
+package studies.Backend.Entities
 
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
@@ -11,7 +11,6 @@ import java.io.Serializable
 @Entity
 @AllArgsConstructor //Presta atencao com como isso lida com ID, talvez gerado pela db?
 data class User(
-    open
     //Valores como strings temporariamente!
     @Id
     @GeneratedValue(strategy=GenerationType.UUID)

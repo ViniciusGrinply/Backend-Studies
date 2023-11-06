@@ -1,4 +1,4 @@
-package studies.backend
+package studies.Backend
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication

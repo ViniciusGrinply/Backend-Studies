@@ -10,19 +10,19 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import studies.Backend.DTO.UserDTO
 import studies.Backend.Repositories.UserRepository
-import studies.backend.Entities.User
+import studies.Backend.Entities.User
 import java.io.Serializable
 import java.util.*
 
 
 @RestController
-@RequestMapping("/person")
+@RequestMapping("/user")
 class UserController {
 
     @Autowired
     lateinit var userRepository : UserRepository;
 
-    @GetMapping("/users")
+    @GetMapping("/all")
     fun getAllUsers(): ResponseEntity<List<User>> {
         val usersList: List<User> = userRepository.findAll()
         if (!usersList.isEmpty()) {
@@ -34,7 +34,6 @@ class UserController {
         return ResponseEntity.status(HttpStatus.OK).body<List<User>>(usersList)
     }
 
-    //O path disso aqui ta certo?
     fun getOneUser(@PathVariable(value = "id") id: String): ResponseEntity<out Serializable> {
         val UserO: Optional<User> = userRepository.findById(id)
         if (UserO.isEmpty()) {
@@ -44,7 +43,7 @@ class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(UserO.get())
     }
 
-    @PostMapping("/users")
+    @PostMapping("/save")
     fun saveUser(@RequestBody @Valid userDTO: UserDTO?): ResponseEntity<User> {
         val user = userDTO?.let {
             User(
@@ -62,7 +61,7 @@ class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(user?.let { userRepository.save(it) })
     }
 
-    @DeleteMapping("/users/{id}")
+    @DeleteMapping("/delete{id}")
     fun deleteUser(@PathVariable(value = "id") id: String): ResponseEntity<String> {
         val userO: Optional<User> = userRepository.findById(id)
         if (userO.isEmpty()) {
@@ -72,7 +71,7 @@ class UserController {
         return ResponseEntity.status(HttpStatus.OK).body("User deleted successfully.")
     }
 
-    @PutMapping("/users/{id}")
+    @PutMapping("/update{id}")
     fun updateUser(
         @PathVariable(value = "id") id: String,
         @RequestBody userDto: @Valid UserDTO?
