@@ -1,4 +1,4 @@
 package studies.backend.Entities
 
-class Store : User() {
+class Store {
 }

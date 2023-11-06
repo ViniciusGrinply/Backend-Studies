@@ -3,17 +3,17 @@ package studies.Backend.Controllers
 import jakarta.validation.Valid
 import org.springframework.beans.BeanUtils
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import studies.Backend.DTO.UserDTO
 import studies.Backend.Repositories.UserRepository
 import studies.backend.Entities.User
-import studies.Backend.DTO.UserDTO
 import java.io.Serializable
 import java.util.*
+
 
 @RestController
 @RequestMapping("/person")
@@ -40,7 +40,7 @@ class UserController {
         if (UserO.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found.")
         }
-        UserO.get().add(linkTo(WebMvcLinkBuilder.methodOn(User::class.java).getAllUsers()).withRel("Users List"))
+        UserO.get().add(linkTo(methodOn(UserController::class.java).getAllUsers()).withRel("Users List"))
         return ResponseEntity.status(HttpStatus.OK).body(UserO.get())
     }
 
@@ -59,7 +59,7 @@ class UserController {
         if (userDTO != null && user != null) {
             BeanUtils.copyProperties(userDTO, user)
         }
-        return ResponseEntity.status(HttpStatus.CREATED).body(userRepository.save(user))
+        return ResponseEntity.status(HttpStatus.CREATED).body(user?.let { userRepository.save(it) })
     }
 
     @DeleteMapping("/users/{id}")
@@ -74,10 +74,10 @@ class UserController {
 
     @PutMapping("/users/{id}")
     fun updateUser(
-        @PathVariable(value = "id") id: UUID?,
+        @PathVariable(value = "id") id: String,
         @RequestBody userDto: @Valid UserDTO?
     ): ResponseEntity<out Any> {
-        val userO: Optional<User> = userRepository.findById(id)
+        val userO: Optional<User> = id.let { userRepository.findById(it) }
         if (userO.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found.")
         }
