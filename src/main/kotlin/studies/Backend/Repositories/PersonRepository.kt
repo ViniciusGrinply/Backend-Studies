@@ -2,7 +2,7 @@ package studies.Backend.Repositories
 
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
-import studies.backend.Entities.Person
+import studies.Backend.Entities.Person
 import java.util.*
 
 @Repository

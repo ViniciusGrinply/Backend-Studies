@@ -1,4 +1,11 @@
-package studies.backend.Entities
+package studies.Backend.Entities
 
-class Person {
-}
+import jakarta.persistence.Entity
+import jakarta.persistence.GeneratedValue
+import jakarta.persistence.GenerationType
+import jakarta.persistence.Id
+
+@Entity
+class Person(@Id
+             @GeneratedValue(strategy= GenerationType.UUID)
+             val ID :  String,)

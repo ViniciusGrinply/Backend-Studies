@@ -4,12 +4,10 @@ import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
-import lombok.AllArgsConstructor
 import org.springframework.hateoas.RepresentationModel
 import java.io.Serializable
 
 @Entity
-@AllArgsConstructor //Presta atencao com como isso lida com ID, talvez gerado pela db?
 data class User(
     //Valores como strings temporariamente!
     @Id
