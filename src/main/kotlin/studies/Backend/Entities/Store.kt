@@ -1,11 +1,16 @@
-package studies.backend.Entities
+package studies.Backend.Entities
 
+import jakarta.persistence.Column
 import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
+import java.util.*
 
 @Entity
-class Store (@Id
-             @GeneratedValue(strategy= GenerationType.UUID)
-             val ID :  String,)
+data class Store (
+    val storeID: UUID? = null,
+    val storeName: String,
+    @Column(name="CNPJ", unique=true)
+    val storeCNPJ: String,
+    val storeEmail: String,
+    val storePassword: String,
+    val storeWallet: String
+) : User(storeID, storeName, storeEmail, storePassword, storeWallet)

@@ -9,12 +9,12 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import studies.Backend.DTO.UserDTO
-import studies.Backend.Repositories.UserRepository
 import studies.Backend.Entities.User
+import studies.Backend.Repositories.UserRepository
 import java.io.Serializable
 import java.util.*
 
-
+//TODO:create a getby/name, email, whatever
 @RestController
 @RequestMapping("/user")
 class UserController {
@@ -22,18 +22,32 @@ class UserController {
     @Autowired
     lateinit var userRepository : UserRepository;
 
+//    Artifact from initial project:
+//    @PostMapping
+//    fun saveUser(@RequestBody @Valid userDTO: UserDTO?): ResponseEntity<User> {
+//        val user = userDTO?.let {
+//            User(
+//                Identifier = it.Identifier,
+//                Email = it.Email,
+//                Name = it.Name,
+//                Password = it.Password,
+//                Wallet = it.Wallet
+//            )
+//        }
+//        if (userDTO != null && user != null) {
+//            BeanUtils.copyProperties(userDTO, user)
+//        }
+//        return ResponseEntity.status(HttpStatus.CREATED).body(user?.let { userRepository.save(it) })
+//    }
+
+
     @GetMapping("/all")
     fun getAllUsers(): ResponseEntity<List<User>> {
         val usersList: List<User> = userRepository.findAll()
-        if (!usersList.isEmpty()) {
-            for (user in usersList) {
-                val id: String = user.ID
-                user.add(linkTo(methodOn(UserController::class.java).getOneUser(id)).withSelfRel())
-            }
-        }
         return ResponseEntity.status(HttpStatus.OK).body<List<User>>(usersList)
     }
 
+    @GetMapping("{id}")
     fun getOneUser(@PathVariable(value = "id") id: String): ResponseEntity<out Serializable> {
         val UserO: Optional<User> = userRepository.findById(id)
         if (UserO.isEmpty()) {
@@ -41,24 +55,6 @@ class UserController {
         }
         UserO.get().add(linkTo(methodOn(UserController::class.java).getAllUsers()).withRel("Users List"))
         return ResponseEntity.status(HttpStatus.OK).body(UserO.get())
-    }
-
-    @PostMapping("/save")
-    fun saveUser(@RequestBody @Valid userDTO: UserDTO?): ResponseEntity<User> {
-        val user = userDTO?.let {
-            User(
-                ID  = it.ID,
-                Identifier = it.Identifier,
-                Email = it.Email,
-                Name = it.Name,
-                Password = it.Password,
-                Wallet = it.Wallet
-            )
-        }
-        if (userDTO != null && user != null) {
-            BeanUtils.copyProperties(userDTO, user)
-        }
-        return ResponseEntity.status(HttpStatus.CREATED).body(user?.let { userRepository.save(it) })
     }
 
     @DeleteMapping("/delete{id}")
@@ -71,7 +67,7 @@ class UserController {
         return ResponseEntity.status(HttpStatus.OK).body("User deleted successfully.")
     }
 
-    @PutMapping("/update{id}")
+    @PutMapping("{id}")
     fun updateUser(
         @PathVariable(value = "id") id: String,
         @RequestBody userDto: @Valid UserDTO?
