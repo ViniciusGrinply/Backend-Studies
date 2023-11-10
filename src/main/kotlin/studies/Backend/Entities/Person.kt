@@ -8,7 +8,7 @@ import java.util.*
 data class Person(
     val personID: UUID? = null,
     @Column(name="CPF", unique=true)
-    val personCPF: String,
+    val CPF: String,
     val personName: String,
     val personEmail: String,
     val personPassword: String,

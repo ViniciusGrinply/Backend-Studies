@@ -24,7 +24,7 @@ class PersonController {
     fun saveUser(@RequestBody @Valid personDTO: PersonDTO?): ResponseEntity<Person> {
         val user = personDTO?.let {
             Person(
-                personCPF = it.CPF,
+                CPF = it.CPF,
                 personName = it.name,
                 personEmail = it.email,
                 personPassword = it.password,
