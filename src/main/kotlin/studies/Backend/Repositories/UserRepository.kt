@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository
 import studies.Backend.Entities.User
 
 @Repository
-public interface UserRepository : JpaRepository<User, String>{
+public interface UserRepository : JpaRepository<User, Long>{
 }

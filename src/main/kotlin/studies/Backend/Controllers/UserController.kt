@@ -21,8 +21,7 @@ class UserController {
 
     @Autowired
     lateinit var userRepository : UserRepository;
-
-//    Artifact from initial project:
+//
 //    @PostMapping
 //    fun saveUser(@RequestBody @Valid userDTO: UserDTO?): ResponseEntity<User> {
 //        val user = userDTO?.let {
@@ -48,7 +47,7 @@ class UserController {
     }
 
     @GetMapping("{id}")
-    fun getOneUser(@PathVariable(value = "id") id: String): ResponseEntity<out Serializable> {
+    fun getOneUser(@PathVariable(value = "id") id: Long): ResponseEntity<out Serializable> {
         val UserO: Optional<User> = userRepository.findById(id)
         if (UserO.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found.")
@@ -58,7 +57,7 @@ class UserController {
     }
 
     @DeleteMapping("/delete{id}")
-    fun deleteUser(@PathVariable(value = "id") id: String): ResponseEntity<String> {
+    fun deleteUser(@PathVariable(value = "id") id: Long): ResponseEntity<String> {
         val userO: Optional<User> = userRepository.findById(id)
         if (userO.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found.")
@@ -69,7 +68,7 @@ class UserController {
 
     @PutMapping("{id}")
     fun updateUser(
-        @PathVariable(value = "id") id: String,
+        @PathVariable(value = "id") id: Long,
         @RequestBody userDto: @Valid UserDTO?
     ): ResponseEntity<out Any> {
         val userO: Optional<User> = id.let { userRepository.findById(it) }

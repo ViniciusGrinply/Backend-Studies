@@ -3,14 +3,13 @@ package studies.Backend.Entities
 import jakarta.persistence.*
 import org.springframework.hateoas.RepresentationModel
 import java.io.Serializable
-import java.util.*
 
 @Entity
-abstract class User(
-    @Column(name="id", unique=true, columnDefinition = "VARCHAR(36)")
+class User(
+    @Column(name="id", unique=true)
     @Id
-    @GeneratedValue(strategy=GenerationType.UUID)
-    val ID :  UUID? = null,
+    @GeneratedValue(strategy= GenerationType.AUTO)
+    val ID :  Long? = null,
     @Column(name="name")
     val Name : String,
     @Column(name="email", unique=true)

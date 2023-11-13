@@ -13,6 +13,7 @@ import studies.Backend.Repositories.PersonRepository
 import java.io.Serializable
 import java.util.*
 
+
 @RestController
 @RequestMapping("/person")
 class PersonController {
@@ -21,39 +22,37 @@ class PersonController {
     lateinit var personRepository : PersonRepository;
 
     @PostMapping
-    fun saveUser(@RequestBody @Valid personDTO: PersonDTO?): ResponseEntity<Person> {
-        val user = personDTO?.let {
+    fun savePerson(@RequestBody @Valid incomingPerson: PersonDTO?): ResponseEntity<Person> {
+        val personToSave = incomingPerson!!.let {
             Person(
-                CPF = it.CPF,
-                personName = it.name,
-                personEmail = it.email,
-                personPassword = it.password,
-                personWallet = it.wallet
+                personName = it.incomingName,
+                personCPF = it.incomingCpf,
+                personEmail = it.incomingEmail,
+                personPassword = it.incomingPassword,
+                personWallet = it.incomingWallet
             )
         }
-        if (personDTO != null && user != null) {
-            BeanUtils.copyProperties(personDTO, user)
-        }
-        return ResponseEntity.status(HttpStatus.CREATED).body(user?.let { personRepository.save(it) })
+        personRepository.save(personToSave)
+        return ResponseEntity.status(HttpStatus.CREATED).body(personToSave)
     }
 
-    @GetMapping("/all")
-    fun getAllPeople(): ResponseEntity<List<Person>> {
+    @GetMapping
+    fun getAllPerson(): ResponseEntity<List<Person>> {
         val peopleList: List<Person> = personRepository.findAll()
         return ResponseEntity.status(HttpStatus.OK).body<List<Person>>(peopleList)
     }
     @GetMapping("{id}")
-    fun getOnePerson(@PathVariable(value = "id") id: UUID): ResponseEntity<out Serializable> {
+    fun getOnePerson(@PathVariable(value = "id") id: Long): ResponseEntity<out Serializable> {
         val PesonO: Optional<Person> = personRepository.findById(id)
         if (PesonO.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Person not found.")
         }
-        PesonO.get().add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(PersonController::class.java).getAllPeople()).withRel("Person List"))
+        PesonO.get().add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(PersonController::class.java).getAllPerson()).withRel("Person List"))
         return ResponseEntity.status(HttpStatus.OK).body(PesonO.get())
     }
 
     @DeleteMapping("/delete{id}")
-    fun deletePerson(@PathVariable(value = "id") id: UUID): ResponseEntity<String> {
+    fun deletePerson(@PathVariable(value = "id") id: Long): ResponseEntity<String> {
         val personO: Optional<Person> = personRepository.findById(id)
         if (personO.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Person not found.")
@@ -63,7 +62,7 @@ class PersonController {
     }
     @PutMapping("{id}")
     fun updatePerson(
-        @PathVariable(value = "id") id: UUID,
+        @PathVariable(value = "id") id: Long,
         @RequestBody personDto: @Valid PersonDTO?
     ): ResponseEntity<out Any> {
         val personO: Optional<Person> = id.let { personRepository.findById(it) }
