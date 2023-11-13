@@ -43,23 +43,14 @@ class PersonController {
     }
     @GetMapping("{id}")
     fun getOnePerson(@PathVariable(value = "id") id: Long): ResponseEntity<out Serializable> {
-        val PesonO: Optional<Person> = personRepository.findById(id)
-        if (PesonO.isEmpty()) {
+        val PersonO: Optional<Person> = personRepository.findById(id)
+        if (PersonO.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Person not found.")
         }
-        PesonO.get().add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(PersonController::class.java).getAllPerson()).withRel("Person List"))
-        return ResponseEntity.status(HttpStatus.OK).body(PesonO.get())
+        PersonO.get().add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(PersonController::class.java).getAllPerson()).withRel("Person List"))
+        return ResponseEntity.status(HttpStatus.OK).body(PersonO.get())
     }
 
-    @DeleteMapping("/delete{id}")
-    fun deletePerson(@PathVariable(value = "id") id: Long): ResponseEntity<String> {
-        val personO: Optional<Person> = personRepository.findById(id)
-        if (personO.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Person not found.")
-        }
-        personRepository.delete(personO.get())
-        return ResponseEntity.status(HttpStatus.OK).body("Person deleted successfully.")
-    }
     @PutMapping("{id}")
     fun updatePerson(
         @PathVariable(value = "id") id: Long,
@@ -74,6 +65,16 @@ class PersonController {
             BeanUtils.copyProperties(personDto, person)
         }
         return ResponseEntity.status(HttpStatus.OK).body(personRepository.save(person))
+    }
+
+    @DeleteMapping("/delete{id}")
+    fun deletePerson(@PathVariable(value = "id") id: Long): ResponseEntity<String> {
+        val personO: Optional<Person> = personRepository.findById(id)
+        if (personO.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Person not found.")
+        }
+        personRepository.delete(personO.get())
+        return ResponseEntity.status(HttpStatus.OK).body("Person deleted successfully.")
     }
 }
 
