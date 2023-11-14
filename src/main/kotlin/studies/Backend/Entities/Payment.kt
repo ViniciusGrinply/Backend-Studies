@@ -9,7 +9,7 @@ class Payment (
     @Column(name="person_ID", unique=true)
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    val paymentID: Long,
+    val paymentID: Long? = null,
 
     @Column (name = "payer")
     val payerId : Long,

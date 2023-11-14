@@ -3,6 +3,7 @@ package studies.Backend.DTO
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
 
+@JvmRecord
 data class StoreDTO (
     @field:NotNull @param:NotBlank val incomingName: String,
     @field:NotNull @param:NotBlank val incomingCnpj: String,
