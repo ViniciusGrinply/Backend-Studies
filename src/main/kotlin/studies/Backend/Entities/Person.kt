@@ -8,7 +8,7 @@ import java.io.Serializable
 data class Person(
     @Column(name="person_ID", unique=true)
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     val personID :  Long? = null,
 
     @Column(name = "person_name")
@@ -24,6 +24,6 @@ data class Person(
     val personPassword: String,
 
     @Column(name="person_wallet")
-    val personWallet: String
+    val personWallet: Double
 
 ) : RepresentationModel<Person>(), Serializable

@@ -8,5 +8,5 @@ data class StoreDTO (
     @field:NotNull @param:NotBlank val incomingCnpj: String,
     @field:NotNull @param:NotBlank val incomingEmail: String,
     @field:NotNull @param:NotBlank val incomingPassword: String,
-    @field:NotNull @param:NotBlank val incomingWallet: String
+    @field:NotNull @param:NotBlank val incomingWallet: Double
 )

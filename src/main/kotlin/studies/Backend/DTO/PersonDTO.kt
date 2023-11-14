@@ -9,5 +9,5 @@ data class PersonDTO (
     @field:NotNull @param:NotBlank val incomingCpf: String,
     @field:NotNull @param:NotBlank val incomingEmail: String,
     @field:NotNull @param:NotBlank val incomingPassword: String,
-    @field:NotNull @param:NotBlank val incomingWallet: String
+    @field:NotNull @param:NotBlank val incomingWallet: Double
 )

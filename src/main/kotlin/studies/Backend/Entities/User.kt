@@ -8,7 +8,7 @@ import java.io.Serializable
 class User(
     @Column(name="id", unique=true)
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     val ID :  Long? = null,
     @Column(name="name")
     val Name : String,

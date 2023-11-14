@@ -8,7 +8,7 @@ import java.io.Serializable
 data class Store (
     @Column(name="person_ID", unique=true)
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     val storeID: Long? = null,
 
     @Column(name = "store_name")
@@ -24,5 +24,5 @@ data class Store (
     val storePassword: String,
 
     @Column(name = "store_wallet")
-    val storeWallet: String
+    val storeWallet: Double
 ) : RepresentationModel<Person>(), Serializable
